@@ -60,6 +60,9 @@ dependencies {
 
     // JWT creation and Bearer token validation.
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+
+    // HTTP client for calling data-api.
+    implementation("org.springframework.boot:spring-boot-starter-restclient")
 }
 
 tasks.withType<Test> {
