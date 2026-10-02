@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import static com.winwin.authapi.Const.EMAIL_MAX_LENGTH;
 import static com.winwin.authapi.Const.PASSWORD_MAX_LENGTH;
 
-public record RegisterRequest(
+public record LoginRequest(
 
         @NotBlank(message = "Email must not be blank")
         @Email(message = "Email must be valid")

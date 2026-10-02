@@ -57,6 +57,9 @@ dependencies {
 
     // JUnit test launcher.
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // JWT creation and Bearer token validation.
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 }
 
 tasks.withType<Test> {

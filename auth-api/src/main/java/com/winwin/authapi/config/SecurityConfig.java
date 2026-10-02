@@ -35,6 +35,10 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest()
                         .authenticated()
-                ).build();
+                )
+                .oauth2ResourceServer(resourceServer ->
+                        resourceServer.jwt(jwt -> {})
+                )
+                .build();
     }
 }
