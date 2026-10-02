@@ -2,6 +2,7 @@ package com.winwin.authapi.processing;
 
 import com.winwin.authapi.data.entity.ProcessingLogEntity;
 import com.winwin.authapi.data.repository.ProcessingLogRepository;
+import com.winwin.authapi.exceptions.DataApiUnavailableException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -9,6 +10,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
@@ -39,5 +41,17 @@ class ProcessServiceTest {
         assertThat(savedLog.getInputText()).isEqualTo("hello");
         assertThat(savedLog.getOutputText()).isEqualTo("OLLEH");
         assertThat(savedLog.getCreatedAt()).isBetween(beforeProcessing, afterProcessing);
+    }
+
+    @Test
+    void doesNotSaveProcessingLogWhenDataApiFails() {
+        UUID userId = UUID.randomUUID();
+        given(dataApiClient.transform("hello"))
+                .willThrow(new DataApiUnavailableException());
+
+        assertThatThrownBy(() -> processService.process(userId, "hello"))
+                .isInstanceOf(DataApiUnavailableException.class);
+
+        then(processingLogRepository).shouldHaveNoInteractions();
     }
 }

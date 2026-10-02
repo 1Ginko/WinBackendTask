@@ -1,10 +1,12 @@
 package com.winwin.authapi.processing;
 
+import com.winwin.authapi.exceptions.DataApiUnavailableException;
 import com.winwin.authapi.processing.models.requests.ProcessRequest;
 import com.winwin.authapi.processing.models.responses.ProcessResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
 @Component
 public class DataApiClient {
@@ -16,16 +18,20 @@ public class DataApiClient {
     }
 
     public String transform(String text) {
-        ProcessResponse response = restClient.post()
-                .uri("/api/transform")
-                .body(new ProcessRequest(text))
-                .retrieve()
-                .body(ProcessResponse.class);
+        try {
+            ProcessResponse response = restClient.post()
+                    .uri("/api/transform")
+                    .body(new ProcessRequest(text))
+                    .retrieve()
+                    .body(ProcessResponse.class);
 
-        if (response == null || response.result() == null) {
-            throw new IllegalStateException("Data API response is null");
+            if (response == null || response.result() == null) {
+                throw new DataApiUnavailableException();
+            }
+
+            return response.result();
+        } catch (RestClientException exception) {
+            throw new DataApiUnavailableException(exception);
         }
-
-        return response.result();
     }
 }
