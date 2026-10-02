@@ -7,6 +7,9 @@ import jakarta.persistence.Table;
 
 import java.util.UUID;
 
+import static com.winwin.authapi.Const.EMAIL_MAX_LENGTH;
+import static com.winwin.authapi.Const.PASSWORD_HASH_MAX_LENGTH;
+
 @Entity
 @Table(name = UserEntity.USER_TABLE)
 public class UserEntity {
@@ -20,10 +23,10 @@ public class UserEntity {
     @Column(name = USER_ID, nullable = false, updatable = false)
     private UUID id;
 
-    @Column(name = USER_EMAIL, nullable = false, length = 320)
+    @Column(name = USER_EMAIL, nullable = false, length = EMAIL_MAX_LENGTH)
     private String email;
 
-    @Column(name = USER_PASSWORD_HASH, nullable = false, length = 255)
+    @Column(name = USER_PASSWORD_HASH, nullable = false, length = PASSWORD_HASH_MAX_LENGTH)
     private String passwordHash;
 
     protected UserEntity() {}
