@@ -15,12 +15,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(TransformController.class)
+@WebMvcTest(
+        value = TransformController.class,
+        properties = "app.internal-token=test-internal-token"
+)
 @Import({WebConfig.class, InternalTokenInterceptor.class})
 class TransformControllerTest {
 
     private static final String TOKEN_HEADER = "X-Internal-Token";
-    private static final String VALID_TOKEN = "dev-internal-token";
+    private static final String VALID_TOKEN = "test-internal-token";
 
     @Autowired
     private MockMvc mockMvc;
