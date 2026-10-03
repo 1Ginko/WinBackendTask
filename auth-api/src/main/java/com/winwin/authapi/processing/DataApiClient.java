@@ -1,6 +1,6 @@
 package com.winwin.authapi.processing;
 
-import com.winwin.authapi.exceptions.DataApiUnavailableException;
+import com.winwin.authapi.errors.exceptions.DataApiUnavailableException;
 import com.winwin.authapi.processing.models.requests.ProcessRequest;
 import com.winwin.authapi.processing.models.responses.ProcessResponse;
 import org.springframework.beans.factory.annotation.Qualifier;

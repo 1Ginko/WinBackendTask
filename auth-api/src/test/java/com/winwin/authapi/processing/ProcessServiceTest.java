@@ -2,7 +2,7 @@ package com.winwin.authapi.processing;
 
 import com.winwin.authapi.data.entity.ProcessingLogEntity;
 import com.winwin.authapi.data.repository.ProcessingLogRepository;
-import com.winwin.authapi.exceptions.DataApiUnavailableException;
+import com.winwin.authapi.errors.exceptions.DataApiUnavailableException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 

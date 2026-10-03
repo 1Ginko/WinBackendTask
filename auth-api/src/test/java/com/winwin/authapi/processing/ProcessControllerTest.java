@@ -1,6 +1,7 @@
 package com.winwin.authapi.processing;
 
 import com.winwin.authapi.config.SecurityConfig;
+import com.winwin.authapi.errors.exceptions.DataApiUnavailableException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -80,8 +81,37 @@ class ProcessControllerTest {
                                   "text": " "
                                 }
                                 """))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.timestamp").exists())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("Bad Request"))
+                .andExpect(jsonPath("$.message").value("Request validation failed"))
+                .andExpect(jsonPath("$.path").value("/api/process"))
+                .andExpect(jsonPath("$.fieldErrors.text").value("Text must not be blank"));
 
         verifyNoInteractions(processService);
+    }
+
+    @Test
+    void returnsBadGatewayWhenDataApiIsUnavailable() throws Exception {
+        UUID userId = UUID.randomUUID();
+        given(processService.process(userId, "hello"))
+                .willThrow(new DataApiUnavailableException());
+
+        mockMvc.perform(post("/api/process")
+                        .with(jwt().jwt(token -> token.subject(userId.toString())))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "text": "hello"
+                                }
+                                """))
+                .andExpect(status().isBadGateway())
+                .andExpect(jsonPath("$.timestamp").exists())
+                .andExpect(jsonPath("$.status").value(502))
+                .andExpect(jsonPath("$.error").value("Bad Gateway"))
+                .andExpect(jsonPath("$.message").value("Data API returned an invalid response"))
+                .andExpect(jsonPath("$.path").value("/api/process"))
+                .andExpect(jsonPath("$.fieldErrors").doesNotExist());
     }
 }

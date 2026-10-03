@@ -1,7 +1,7 @@
 package com.winwin.authapi.processing;
 
 import com.winwin.authapi.config.DataApiConfig;
-import com.winwin.authapi.exceptions.DataApiUnavailableException;
+import com.winwin.authapi.errors.exceptions.DataApiUnavailableException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;

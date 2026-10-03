@@ -2,8 +2,8 @@ package com.winwin.authapi.auth;
 
 import com.winwin.authapi.data.entity.UserEntity;
 import com.winwin.authapi.data.repository.UserRepository;
-import com.winwin.authapi.exceptions.EmailAlreadyExistsException;
-import com.winwin.authapi.exceptions.InvalidCredentialsException;
+import com.winwin.authapi.errors.exceptions.EmailAlreadyExistsException;
+import com.winwin.authapi.errors.exceptions.InvalidCredentialsException;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

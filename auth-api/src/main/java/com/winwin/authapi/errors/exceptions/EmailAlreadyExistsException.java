@@ -1,4 +1,4 @@
-package com.winwin.authapi.exceptions;
+package com.winwin.authapi.errors.exceptions;
 
 import org.springframework.web.server.ResponseStatusException;
 
