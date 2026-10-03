@@ -99,6 +99,26 @@ class AuthControllerTest {
     }
 
     @Test
+    void rejectsPasswordLongerThanMaximumLength() throws Exception {
+        String password = "a".repeat(25);
+        String requestJson = """
+                {
+                  "email": "oleg@example.com",
+                  "password": "%s"
+                }
+                """.formatted(password);
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.fieldErrors.password")
+                        .value("Password must not exceed 24 characters"));
+
+        verifyNoInteractions(authService);
+    }
+
+    @Test
     void logsInUser() throws Exception {
         given(authService.login("oleg@example.com", "pass"))
                 .willReturn("jwt-token");
